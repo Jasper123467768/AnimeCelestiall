@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-32">
+  <meta name="viewport" content="width=device-width, initial-scale=5">
+  <title>Echelons Dev Team</title>
+  <!-- Futuristic font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:400,700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #141414, #000);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Primary Rotating Border */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      box-sizing: border-box;
+      border: 4px solid;
+      border-image: linear-gradient(45deg, #00d1ff, #ff0080, #00d1ff) 1;
+      animation: rotateBorder 20s linear infinite;
+      pointer-events: none;
+      z-index: 100;
+    }
+    @keyframes rotateBorder {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    /* Secondary Pulsing Border */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      box-sizing: border-box;
+      border: 3px dashed;
+      border-image: linear-gradient(135deg, #ff0080, #00d1ff, #ff0080) 1;
+      animation: pulseBorder 3s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 101;
+    }
+    @keyframes pulseBorder {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    /* Holographic Grid Background */
+    .grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: 
+        linear-gradient(0deg, transparent 24%, rgba(0, 209, 255, 0.15) 25%, rgba(0, 209, 255, 0.15) 26%, transparent 27%, transparent 74%, rgba(255, 0, 128, 0.15) 75%, rgba(255, 0, 128, 0.15) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(255, 0, 128, 0.15) 25%, rgba(255, 0, 128, 0.15) 26%, transparent 27%, transparent 74%, rgba(0, 209, 255, 0.15) 75%, rgba(0, 209, 255, 0.15) 76%, transparent 77%, transparent);
+      background-size: 50px 50px;
+      animation: moveGrid 30s linear infinite;
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 50;
+    }
+    @keyframes moveGrid {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50px, -50px); }
+    }
+    /* Floating Neon Shapes */
+    .neon-shape {
+      position: absolute;
+      border: 2px solid rgba(0, 209, 255, 0.7);
+      width: 100px;
+      height: 100px;
+      opacity: 0.3;
+      animation: float 10s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 80;
+    }
+    .neon-shape:nth-child(1) { top: 10%; left: 20%; animation-duration: 12s; }
+    .neon-shape:nth-child(2) { top: 70%; left: 10%; animation-duration: 15s; }
+    .neon-shape:nth-child(3) { top: 40%; left: 80%; animation-duration: 18s; }
+    .neon-shape:nth-child(4) { top: 85%; left: 75%; animation-duration: 14s; }
+    @keyframes float {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(10px, -10px) rotate(15deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+    /* Glitch Animation for Text */
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #00d1ff;
+      clip: rect(0, 900px, 0, 0);
+    }
+    .glitch::after {
+      color: #ff0080;
+      z-index: -1;
+    }
+    .glitch:hover {
+      animation: glitchEffect 1s infinite;
+    }
+    @keyframes glitchEffect {
+      0% { clip: rect(10px, 9999px, 15px, 0); transform: translate(2px, -2px); }
+      20% { clip: rect(5px, 9999px, 10px, 0); transform: translate(-2px, 2px); }
+      40% { clip: rect(20px, 9999px, 25px, 0); transform: translate(2px, 2px); }
+      60% { clip: rect(15px, 9999px, 20px, 0); transform: translate(-2px, -2px); }
+      80% { clip: rect(10px, 9999px, 15px, 0); transform: translate(2px, -2px); }
+      100% { clip: rect(5px, 9999px, 10px, 0); transform: translate(0, 0); }
+    }
+    /* Navigation Bar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      z-index: 120;
+      border-bottom: 1px solid rgba(0, 209, 255, 0.5);
+    }
+    nav a {
+      margin: 0 20px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #00d1ff;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background: #00d1ff;
+      transition: width 0.3s ease;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+    /* Sections with Transition Effect */
+    .section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      display: none;
+      padding-top: 70px;
+      height: calc(100vh - 70px);
+      text-align: center;
+      position: relative;
+      z-index: 110;
+      overflow-y: auto;
+    }
+    .section.active {
+      display: block;
+      animation: floatIn 0.8s ease-out forwards;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(50px) scale(0.8) rotateX(20deg); }
+      to { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+    }
+    /* Frame for Text Content */
+    .frame {
+      border: 2px solid rgba(0, 209, 255, 0.8);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 80%;
+      box-shadow: 0 0 15px rgba(0, 209, 255, 0.7);
+      background: rgba(0, 0, 0, 0.6);
+    }
+    /* Home Section */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
+    }
+    .title {
+      font-size: 4rem;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+      margin-bottom: 20px;
+    }
+    .subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+    .button {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: #fff;
+      background: linear-gradient(45deg, #00d1ff, #ff0080);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.7);
+    }
+    /* Discord Section */
+    .discord-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+    .discord-content h2 {
+      font-size: 2rem;
+      text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+      margin-bottom: 20px;
+    }
+    .discord-content p {
+      font-size: 1rem;
+      margin: 10px 0 20px;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+    /* Game Progress Section */
+    .game-progress {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      line-height: 1.5;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 120;
+      background: rgba(0, 0, 0, 0.85);
+      border-top: 1px solid rgba(0, 209, 255, 0.5);
+    }
+	/* Team Section Styles */
+    .team-list {
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: calc(0.8rem + 0.3vw); /* Reduced font size for team text */ 
+      line-height: 1.6;
+    }
+    .team-list h3 {
+      font-size: calc(1.2rem + 0.3vw); /* Reduced heading size */ 
+      margin: 20px 0 10px;
+      color: #00d1ff;
+      text-transform: uppercase;
+    }
+    .team-list p {
+      margin: 0 0 10px;
+      font-size: calc(0.8rem + 0.3vw); /* Reduced font size */\n      -webkit-text-stroke: 0.5px #00d1ff;\n      text-shadow: -0.5px -0.5px 0 #00d1ff, 0.5px -0.5px 0 #00d1ff, -0.5px 0.5px 0 #00d1ff, 0.5px 0.5px 0 #00d1ff;\n    }
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: calc(0.9rem + 0.2vw);
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 120;
+      background: rgba(0,0,0,0.85);
+      border-top: 1px solid rgba(0,209,255,0.5);
+	  }
+    /* Starfield Background */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 30;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: moveStar linear infinite;
+    }
+    @keyframes moveStar {
+      from { transform: translateY(0); }
+      to { transform: translateY(100vh); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Holographic Grid Background -->
+  <div class="grid"></div>
+  <!-- Floating Neon Shapes -->
+  <div class="neon-shape"></div>
+  <div class="neon-shape"></div>
+  <div class="neon-shape"></div>
+  <div class="neon-shape"></div>
+  
+  <!-- Enhanced Multi-Layered Borders -->
+  <!-- (Pseudo-elements on body are used for primary & secondary borders above) -->
+  
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#" id="homeTab" class="active">Home</a>
+    <a href="#" id="discordTab">Discord</a>
+    <a href="#" id="gameProgressTab">Game Progress</a>
+	    <a href="#" id="teamTab">The Team</a>
+  </nav>
+
+  <!-- Home Section -->
+  <div id="homeSection" class="section active">
+    <div class="container">
+        <h1 class="title glitch" data-text="Anime Celestial">Echelons Dev Team</h1>
+        <p class="subtitle">Ready to Join Us? click Discord above! We are an AMAZING community!</p>
+        <a href="https://discord.gg/FAp9GfqG" target="_blank" class="button">Enter the Realm</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Discord Section -->
+  <div id="discordSection" class="section">
+    <div class="discord-content">
+            <h1 class="title glitch" data-text="Anime Celestial">Echelons Dev Team</h1>
+        <p>
+          Connect with fellow enthusiasts, get exclusive updates, and participate in vibrant discussions.
+          Become part of our growing Anime Celestial community—discover insider tips, event news, and collaborate with others who share your passion for cutting-edge, sci‑fi inspired gaming.
+        </p>
+        <a href="https://discord.gg/FAp9GfqG" target="_blank" class="button">Join Anime Celestial</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Game Progress Section -->
+  <div id="gameProgressSection" class="section">
+          <h1 class="title glitch" data-text="Anime Celestial">Echelons Dev Team</h1>
+    <div class="game-progress">
+        <p>We are Under-Development at the moment, soon we will launch the game for testing, following this, it will be released! If you have any questions on the status of the game etc join the discord and ask a member of staff!</p>
+        <a href="https://discord.gg/FAp9GfqG" target="_blank" class="button">Join Anime Celestial</a>
+      </div>
+    </div>
+  </div>
+  
+    <!-- The Team Section -->
+  <div id="teamSection" class="section">
+    <div class="container">
+      <div class="frame">
+        <h2>The Team</h2>
+        <div class="team-list">
+          <h3>Lead Developers</h3>
+          <p>Ax, Konami</p>
+          <h3>Developers</h3>
+          <p>7_rack, XenCent, Ancient, Emerald, Lucci, Pandaozz, timeless</p>
+          <h3>Engineer</h3>
+          <p>SergeantVrym</p>
+          <h3>Owner</h3>
+          <p>Mushy</p>
+          <h3>Community Manager</h3>
+          <p>cia</p>
+          <h3>Head Admin</h3>
+          <p>Kumagawa</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Website Creator - SergeantVrym                             |                         Game Owner - Kaeuis</p>
+  </footer>
+
+  <!-- Starfield Background -->
+  <div class="stars"></div>
+
+  <script>
+    // Navigation Tab Switching with "Float In" Transition
+    const homeTab = document.getElementById("homeTab");
+    const discordTab = document.getElementById("discordTab");
+    const gameProgressTab = document.getElementById("gameProgressTab");
+    const homeSection = document.getElementById("homeSection");
+    const discordSection = document.getElementById("discordSection");
+    const gameProgressSection = document.getElementById("gameProgressSection");
+	const teamSection = document.getElementById("teamSection");
+	const teamTab = document.getElementById("teamTab");
+
+    function switchTab(activeTab, activeSection) {
+      document.querySelectorAll("nav a").forEach(tab => tab.classList.remove("active"));
+      document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+      activeTab.classList.add("active");
+      activeSection.classList.add("active");
+    }
+
+    homeTab.addEventListener("click", function(e) {
+      e.preventDefault();
+      switchTab(homeTab, homeSection);
+    });
+
+    discordTab.addEventListener("click", function(e) {
+      e.preventDefault();
+      switchTab(discordTab, discordSection);
+    });
+
+    gameProgressTab.addEventListener("click", function(e) {
+      e.preventDefault();
+      switchTab(gameProgressTab, gameProgressSection);
+    });
+	
+	 teamTab.addEventListener("click", function(e) {
+      e.preventDefault();
+      switchTab(teamTab, teamSection);
+    });
+
+    // Create animated stars for a dynamic background
+    const starContainer = document.querySelector('.stars');
+    const numStars = 150;
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.top = Math.random() * 100 + 'vh';
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      star.style.opacity = Math.random();
+      starContainer.appendChild(star);
+    }
+	
+  </script>
+  
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sci-Fi Cursor</title>
+    <style>
+        /* Hide default cursor */
+        body {
+            cursor: none;
+            background: black;
+            overflow: hidden;
+        }
+
+        /* Main glowing cursor */
+        .sci-fi-cursor {
+            position: fixed;
+            width: 43px;
+            height: 44px;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: background 0.3s, box-shadow 0.3s;
+            animation: glowPulse 1.2s infinite alternate ease-in-out;
+        }
+
+        /* Smooth glowing pulse animation */
+        @keyframes glowPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+
+        /* Subtle sci-fi trail effect */
+        .cursor-trail {
+            position: fixed;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            transform: translate(-50%, -50%);
+            transition: transform 0.02s linear, opacity 0.1s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sci-fi-cursor" id="cursor"></div>
+
+    <script>
+        const cursor = document.getElementById("cursor");
+        let trailArray = [];
+        let colors = [
+            { name: "Cyan", color: "#00fff6", shadow: "0 0 15px #00fff6, 0 0 30px cyan" },
+            { name: "Red", color: "#ff003c", shadow: "0 0 15px #ff003c, 0 0 30px red" },
+            { name: "Green", color: "#00ff4c", shadow: "0 0 15px #00ff4c, 0 0 30px lime" },
+            { name: "Purple", color: "#b200ff", shadow: "0 0 15px #b200ff, 0 0 30px violet" },
+            { name: "Gold", color: "#ffcc00", shadow: "0 0 15px #ffcc00, 0 0 30px orange" }
+        ];
+        let currentColorIndex = 0;
+
+        // Function to update cursor color
+        function updateCursorColor() {
+            const { color, shadow } = colors[currentColorIndex];
+            cursor.style.background = `radial-gradient(circle, ${color}, transparent)`;
+            cursor.style.boxShadow = shadow;
+        }
+
+        // Set initial color
+        updateCursorColor();
+
+        document.addEventListener("mousemove", (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+
+            // Sci-fi trail effect
+            const trail = document.createElement("div");
+            trail.classList.add("cursor-trail");
+            document.body.appendChild(trail);
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+            trail.style.background = colors[currentColorIndex].color;
+            trail.style.boxShadow = colors[currentColorIndex].shadow;
+
+            // Store trail elements to remove after delay
+            trailArray.push(trail);
+            if (trailArray.length > 10) {
+                let oldTrail = trailArray.shift();
+                oldTrail.style.opacity = "0";
+                setTimeout(() => oldTrail.remove(), 200);
+            }
+        });
+
+        // Change color on "C" press
+        document.addEventListener("keydown", (e) => {
+            if (e.key.toLowerCase() === "c") {
+                currentColorIndex = (currentColorIndex + 1) % colors.length;
+                updateCursorColor();
+            }
+        });
+    </script>
+
+</body>
+</html>
