@@ -162,7 +162,7 @@
     .section {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.5s ease, transform 0.2s ease;
       display: none;
       padding-top: 70px;
       height: calc(100vh - 70px);
@@ -173,7 +173,7 @@
     }
     .section.active {
       display: block;
-      animation: floatIn 0.8s ease-out forwards;
+      animation: floatIn 0.2s ease-out forwards;
     }
     @keyframes floatIn {
       from { opacity: 0; transform: translateY(50px) scale(0.8) rotateX(20deg); }
